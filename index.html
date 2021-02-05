@@ -1,0 +1,91 @@
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" href="css/style.css">
+<title>Vue.js入門</title>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+
+<body>
+
+  <!-- 宣言的レンダリング -->
+  <!-- ツールチップはCSSで一旦実装。最終的にVuetifyを使う。 -->
+  <div id="tooltip" class="c-tooltip" data-tooltip="ツールチップの内容">
+    {{ message }}
+  </div>
+
+  <script>
+    var tooltip = new Vue({
+      el: '#tooltip',
+      data: {
+        message: '宣言的レンダリング'
+      }
+    });
+  </script>
+
+
+
+  <div id="table">
+    <!-- ユーザー入力の制御 -->
+    <!-- STUB -->
+    <p>{{ message }}</p>
+    <!-- 入力フォーム -->
+    <input v-model="message">
+    <!-- 送信ボタン -->
+    <button v-on:click="insertTable">Insert</button>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- 条件分岐とループ -->
+        <tr v-if="seen" v-for="category in categories">
+          <td>
+            {{ category.id }}
+          </td>
+          <td>
+            {{ category.name }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    var table = new Vue({
+      el: '#table',
+      data: {
+        message: 'Hello Vue!',
+        // 表示条件分岐
+        seen: true,
+        //テーブルデータ部
+        categories: [
+          { 
+            id: '001',
+            name: 'Tanaka' 
+          },
+          { 
+            id: '002',
+            name: 'Tamura' 
+          },
+          { 
+            id: '003',
+            name: 'Nakata' 
+          },
+        ]
+      },
+      methods: {
+        insertTable: function () {
+          // 検知機構(リアクティブに追加)
+          this.$set(this.categories,　this.categories.length, {id: ("000" + (this.categories.length + 1)).slice( -3 ), name: 'Test'})
+          console.log(this.categories)
+          console.log('Tanaka' in this.categories)
+        }
+      }
+    })
+  </script>
+
+
+</body>
