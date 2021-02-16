@@ -1,12 +1,12 @@
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<link rel="stylesheet" href="css/style.css">
-<title>Vue.js入門</title>
-<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-</head>
-
-<body>
-
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <link rel="stylesheet" href="css/style.css">
+  <title>Vue.js入門</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  </head>
+  
+  <body>
+  
   <!-- 宣言的レンダリング -->
   <!-- ツールチップはCSSで一旦実装。最終的にVuetifyを使う。 -->
   <div id="tooltip" class="c-tooltip" data-tooltip="ツールチップの内容">
@@ -22,19 +22,12 @@
     });
   </script>
 
-
-
   <div id="table">
     <!-- ユーザー入力の制御 -->
-    <!-- STUB -->
-    <p>{{ message }}</p>
     <!-- 入力フォーム -->
-    <input v-model="message">
-    <!-- 送信ボタン -->
-    <button v-on:click="insertTable">Insert</button>
-
-
-
+    <todo-insert
+      v-on:insert="insertTable"
+    ></todo-insert>
     <table>
       <caption>TABLE</caption>
       <thead>
@@ -43,53 +36,94 @@
           <th id="">Name</th>
         </tr>
       </thead>
-      <tbody>
-        <!-- 条件分岐とループ -->
-        <tr v-if="seen" v-for="category in categories">
-          <td>
-            {{ category.id }}
-          </td>
-          <td>
-            {{ category.name }}
-          </td>
-        </tr>
-      </tbody>
+        <tbody>
+          <!-- 条件分岐とループ -->
+           <tr
+           is="todo-category"
+            v-if="seen"
+            v-for="category in categories"
+            v-bind:key="category.id"
+            v-bind:todo="category"
+          ></tr>
+        </tbody>
     </table>
   </div>
 
+
   <script>
+    Vue.component('todo-insert', {
+      data: function () {
+        return {
+          message: 'Insert Name',
+          insertTable: ''
+        }
+      },
+      template: `
+        <div>
+          <input v-model="message">
+          <button v-on:click="$emit('insert',message)">Insert</button>
+        </div>
+      `
+    })
+
+    Vue.component('todo-category', {
+    props: ['todo'],
+    template: '\
+      <tr>\
+                  <td>\
+                  {{ todo.id }}\
+                  </td>\
+                  <td>\
+                    {{ todo.name }}\
+                  </td>\
+                </tr>'
+    })
+    
     var table = new Vue({
       el: '#table',
-      data: {
-        message: 'Insert Name',
-        // 表示条件分岐
-        seen: true,
-        //テーブルデータ部
-        categories: [
-          { 
-            id: '001',
-            name: 'Tanaka' 
-          },
-          { 
-            id: '002',
-            name: 'Tamura' 
-          },
-          { 
-            id: '003',
-            name: 'Nakata' 
-          },
-        ]
-      },
-      methods: {
-        insertTable: function () {
-          // 検知機構(リアクティブに追加)
-          this.$set(this.categories,　this.categories.length, {id: ("000" + (this.categories.length + 1)).slice( -3 ), name: 'Test'})
-          console.log(this.categories)
-          console.log('Tanaka' in this.categories)
+        data: function() {
+          return{
+            // 表示条件分岐
+            seen: true,
+            //テーブルデータ部
+            categories: [
+              { 
+                id: '001',
+                name: 'Tanaka' 
+              },
+              { 
+                id: '002',
+                name: 'Tamura' 
+              },
+              { 
+                id: '003',
+                name: 'Nakata' 
+              },
+            ]
+          }
+        },
+        methods: {
+          insertTable: function (message) {
+
+            // 重複チェック
+            let result = this.categories.filter((element, index, seif) => 
+              seif.findIndex(e => 
+                e.name === message
+              ) === index
+            )
+
+            // 重複ありの場合、処理終了
+            if (result.length > 0){
+              alert('入力データが重複しています。')
+              return
+            }
+
+            // データ追加(リアクティブに追加)
+            this.$set(this.categories,　this.categories.length, {id: ("000" + (this.categories.length + 1)).slice( -3 ), name: message})
+          }
         }
       }
-    })
+    )
   </script>
-
-
-</body>
+  
+  </body>
