@@ -1,22 +1,46 @@
 <template>
   <body>
-    <h3>検索結果</h3>
-    <table border="1">
-      <thead>
-        <tr>
-          <td>User Id</td>
-          <td>User Name</td>
-          <td>Detail</td>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>{{ user.id }}</td>
-          <td>{{ user.name }}</td>
-          <td>{{ user.detail }}</td>
-        </tr>
-      </tbody>
-    </table>
+      <v-container class="grey lighten-5">
+        <v-row no-gutters>
+          <v-col
+            cols="6"
+            sm="3"
+            md="4"
+          >
+            <h3>検索結果</h3>
+          </v-col>
+        </v-row>  
+        <v-row no-gutters>
+          <v-col
+            cols="6"
+            sm="3"
+            md="4"
+          >
+            <v-simple-table>
+              <template v-slot:default>
+                <thead>
+                  <tr>
+                    <th class="text-left">
+                      User ID
+                    </th>
+                    <th class="text-left">
+                      User Name
+                    </th>
+                    <th class="text-left">
+                      Detail
+                    </th>
+                  </tr>
+                </thead>
+                  <tbody>
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.name }}</td>
+                    <td>{{ user.detail }}</td>
+                  </tbody>
+              </template>
+            </v-simple-table>
+          </v-col>
+        </v-row>  
+      </v-container>
   </body>
 </template>
 
