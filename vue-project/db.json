@@ -1,7 +1,7 @@
 {
-    "users": [
-      { "id": "001", "name": "Tanaka" , "detail": "Sugoi"},
-      { "id": "002", "name": "Tamura" , "detail": "Yabai"},
-      { "id": "003", "name": "Nakata" , "detail": "Turai"}
-    ]
-  }
+  "users": [
+    { "id": "001", "name": "Tanaka" , "detail": "Sugoi"},
+    { "id": "002", "name": "Tamura" , "detail": "Yabai"},
+    { "id": "003", "name": "Nakata" , "detail": "Turai"}
+  ]
+}
